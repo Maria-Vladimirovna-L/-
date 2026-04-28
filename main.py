@@ -2,8 +2,10 @@ import tkinter as tk
 from tkinter import messagebox
 import requests
 import json
+
 # Путь к файлу с избранными пользователями
 FAVORITES_FILE = "favorites.json"
+
 def load_favorites():
     try:
         with open(FAVORITES_FILE, "r") as f:
@@ -14,11 +16,13 @@ def load_favorites():
 def save_favorites(favorites):
     with open(FAVORITES_FILE, "w") as f:
         json.dump(favorites, f, indent=2)
+
 def search_user():
     username = entry_search.get().strip()
     if not username:
         messagebox.showwarning("Ошибка", "Поле поиска не должно быть пустым!")
         return
+
     try:
         response = requests.get(f"https://api.github.com/users/{username}")
         response.raise_for_status()
@@ -26,6 +30,7 @@ def search_user():
         display_user(user_data)
     except requests.exceptions.RequestException as e:
         messagebox.showerror("Ошибка", f"Пользователь не найден или ошибка сети: {e}")
+
 def display_user(user_data):
     # Очищаем список результатов
     listbox_results.delete(0, tk.END)
@@ -34,10 +39,12 @@ def display_user(user_data):
     # Сохраняем данные пользователя для добавления в избранное
     global current_user_data
     current_user_data = user_data
+
 def add_to_favorites():
     if not current_user_data:
         messagebox.showwarning("Ошибка", "Сначала найдите пользователя!")
         return
+
     favorites = load_favorites()
     # Проверяем, нет ли уже такого пользователя в избранном
     if any(u['login'] == current_user_data['login'] for u in favorites):
