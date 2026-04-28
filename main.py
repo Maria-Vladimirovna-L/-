@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 import requests
 import json
-
 # Путь к файлу с избранными пользователями
 FAVORITES_FILE = "favorites.json"
 
